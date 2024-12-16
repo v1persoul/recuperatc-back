@@ -32,14 +32,24 @@ public class MateriaController {
         // Valida el token con Supabase
         supabaseClient.validateToken(token);
         String materiaId = (String) requestBody.get("materiaId");
-        supabaseClient.updateData("/rest/v1/materias_deseadas?id=eq." + usuarioId, "materias_deseadas", materiaId, "add");
+    
+        // Crear un objeto JSON para enviar
+        String jsonInputString = "{\"usuario_id\": \"" + usuarioId + "\", \"materia_id\": \"" + materiaId + "\"}";
+    
+        // Llamar a updateData con el objeto JSON
+        supabaseClient.updateData("/rest/v1/materias_deseadas", jsonInputString);
     }
-
+    
     @PostMapping("/deseadas/{usuarioId}/eliminar")
     public void eliminarMateriaDeseada(@RequestHeader("Authorization") String token, @PathVariable String usuarioId, @RequestBody Map<String, Object> requestBody) throws IOException {
         // Valida el token con Supabase
         supabaseClient.validateToken(token);
         String materiaId = (String) requestBody.get("materiaId");
-        supabaseClient.updateData("/rest/v1/materias_deseadas?id=eq." + usuarioId, "materias_deseadas", materiaId, "remove");
+    
+        // Crear un objeto JSON para enviar
+        String jsonInputString = "{\"usuario_id\": \"" + usuarioId + "\", \"materia_id\": \"" + materiaId + "\"}";
+    
+        // Llamar a updateData con el objeto JSON
+        supabaseClient.updateData("/rest/v1/materias_deseadas?id=eq." + usuarioId, jsonInputString);
     }
 }

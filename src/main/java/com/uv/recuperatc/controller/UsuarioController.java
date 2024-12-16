@@ -92,12 +92,16 @@ public class UsuarioController {
             supabaseClient.validateToken(token);
             String json = new ObjectMapper().writeValueAsString(requestBody);
             logger.info("Payload JSON para Supabase: {}", json);
-            String response = supabaseClient.postData("/auth/v1/user", json);
+            
+            String response = supabaseClient.updateData("/auth/v1/user", json); // Usa updateData
             logger.info("Respuesta de Supabase: {}", response);
             return response;
         } catch (IOException e) {
             logger.error("Error actualizando usuario: ", e);
-            throw new RuntimeException("Error actualizando usuario", e);
+            throw new RuntimeException("Error actualizando usuario: " + e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("Error inesperado: ", e);
+            throw new RuntimeException("Error inesperado al actualizar usuario: " + e.getMessage(), e);
         }
     }
 }

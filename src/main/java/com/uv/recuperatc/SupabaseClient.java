@@ -38,22 +38,41 @@ public class SupabaseClient {
         }
     }
 
-    public void updateData(String endpoint, String column, String value, String action) throws IOException {
+    public String postData(String endpoint, String jsonInputString) throws IOException {
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
-        String jsonInputString = "{\"" + column + "\": {\"action\": \"" + action + "\", \"value\": \"" + value + "\"}}";
         RequestBody body = RequestBody.create(jsonInputString, JSON);
-
+    
         Request request = new Request.Builder()
                 .url(supabaseUrl + endpoint)
-                .patch(body)
+                .post(body) // Usa POST para enviar datos
                 .addHeader("apikey", supabaseApiKey)
                 .addHeader("Authorization", "Bearer " + supabaseApiKey)
                 .build();
-
+    
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
             }
+            return response.body().string(); // Devuelve la respuesta como un String
+        }
+    }
+
+    public String updateData(String endpoint, String jsonInputString) throws IOException {
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(jsonInputString, JSON);
+    
+        Request request = new Request.Builder()
+                .url(supabaseUrl + endpoint)
+                .patch(body) // Cambia a .put(body) si es necesario
+                .addHeader("apikey", supabaseApiKey)
+                .addHeader("Authorization", "Bearer " + supabaseApiKey)
+                .build();
+    
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            return response.body().string(); // Devuelve la respuesta como un String
         }
     }
 
