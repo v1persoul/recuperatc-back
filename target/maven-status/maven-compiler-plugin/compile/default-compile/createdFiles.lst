@@ -1,0 +1,4 @@
+com/uv/recuperatc/RecuperatcApplication.class
+com/uv/recuperatc/controller/UsuarioController.class
+com/uv/recuperatc/controller/MateriaController.class
+com/uv/recuperatc/SupabaseClient.class
